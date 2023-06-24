@@ -8,14 +8,14 @@ through the book in a variety of other languages as well, as a way to compare
 and contrast the languages that I'm interested in and as an exercise to actually 
 learn new programming languages. 
 
-Currently planning on implementing the interpreter in these languages: 
-**Go** 
-**Python** 
-**Rust**
-**Elixir**
-**Ocaml** 
-**Odin**
-**Haskell** 
+Currently planning on implementing the interpreter in these languages:  
+**Go**  
+**Python**  
+**Rust** 
+**Elixir**  
+**Ocaml**  
+**Odin**  
+**Haskell**  
 
 Of these I know **Go** and **Python**, so I'm looking forward to learning 
 the other languages (*especially the functional ones*) with something as 
