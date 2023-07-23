@@ -1,5 +1,6 @@
-import 'package:dart/dart.dart' as dart;
+import 'package:dart/repl.dart';
 
 void main(List<String> arguments) {
-  print('Hello world: ${dart.calculate()}!');
+  print('Welcome to the Monkey REPL!');
+  start();
 }

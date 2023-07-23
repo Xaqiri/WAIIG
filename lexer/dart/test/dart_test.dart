@@ -1,5 +1,5 @@
-import 'package:monkey/lexer.dart';
-import 'package:monkey/token.dart';
+import 'package:dart/lexer.dart';
+import 'package:dart/token.dart';
 import 'package:test/test.dart';
 
 void main() {
