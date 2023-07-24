@@ -35,10 +35,9 @@ class Lexer {
   }
 
   bool isDigit(String ch) {
-    var n = int.tryParse(ch);
-    return switch (n) {
+    return switch (int.tryParse(ch)) {
       null => false,
-      _ => true, //0 <= n && n <= 9,
+      _ => true,
     };
   }
 
@@ -79,6 +78,17 @@ class Lexer {
     return Token(literal: literal, type: type);
   }
 
+  Token getString() {
+    var pos = position;
+    readChar();
+    while (ch != '\'') {
+      readChar();
+    }
+    readChar();
+    var literal = input.substring(pos, position);
+    return Token(type: TokenType.STRING, literal: literal);
+  }
+
   Token createToken(TokenType type, String literal) {
     var tok = Token(type: type, literal: literal);
     readChar();
@@ -98,7 +108,7 @@ class Lexer {
 
   Token nextToken() {
     skipWhiteSpace();
-    var tok = switch (ch) {
+    return switch (ch) {
       '=' => peekChar() == '='
           ? createTwoCharToken()
           : createToken(TokenType.ASSIGN, '='),
@@ -117,13 +127,16 @@ class Lexer {
       '}' => createToken(TokenType.RBRACE, '}'),
       ',' => createToken(TokenType.COMMA, ','),
       ';' => createToken(TokenType.SEMICOLON, ';'),
+      '\'' =>
+        !(isLetter(peekChar()) || isDigit(peekChar())) && peekChar() != '\''
+            ? createToken(TokenType.SQUOTE, '\'')
+            : getString(),
       '' => createToken(TokenType.EOF, ''),
       _ => isLetter(ch)
           ? checkIdentOrKeyword()
           : isDigit(ch)
               ? getNumber()
-              : Token(type: TokenType.ILLEGAL, literal: ch),
+              : createToken(TokenType.ILLEGAL, ch),
     };
-    return tok;
   }
 }

@@ -17,6 +17,7 @@ void main() {
 
       if else return true false
       == !=
+      'hello' ''
   ''';
 
     var lexer = Lexer(input: text);
@@ -76,6 +77,8 @@ void main() {
       {TokenType.FALSE, 'false'},
       {TokenType.EQ, '=='},
       {TokenType.NOT_EQ, '!='},
+      {TokenType.STRING, '\'hello\''},
+      {TokenType.STRING, '\'\''},
       {TokenType.EOF, ''},
     };
 

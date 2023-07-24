@@ -9,9 +9,7 @@ void start() {
   while (true) {
     stdout.write(PROMPT);
     var line = stdin.readLineSync()!.trim();
-    if (line == 'exit') {
-      return;
-    }
+    if (line == 'exit') return;
     var lexer = Lexer(input: line);
     var tok = lexer.nextToken();
     for (tok; tok.type != TokenType.EOF; tok = lexer.nextToken()) {
