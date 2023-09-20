@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:dart/lexer.dart';
 import 'package:dart/token.dart';
 
-final PROMPT = '>> ';
+final prompt = '>> ';
 
 void start() {
   while (true) {
-    stdout.write(PROMPT);
+    stdout.write(prompt);
     var line = stdin.readLineSync()!.trim();
     if (line == 'exit') return;
     var lexer = Lexer(input: line);

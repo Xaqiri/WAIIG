@@ -5,9 +5,7 @@ class Lexer {
   int position = 0;
   int readPosition = 0;
   String ch = '';
-  Lexer({
-    required this.input,
-  }) {
+  Lexer({required this.input}) {
     readChar();
   }
 
@@ -66,77 +64,88 @@ class Lexer {
   Token checkIdentOrKeyword() {
     var literal = readIdentifier();
     var type = lookupIdent(literal);
-    return Token(
-      literal: literal,
-      type: type,
-    );
+    return Token(type: type, literal: literal);
   }
 
   Token getNumber() {
-    var literal = readNumber();
     var type = TokenType.INT;
-    return Token(literal: literal, type: type);
+    var literal = readNumber();
+    return Token(type: type, literal: literal);
   }
 
   Token getString() {
     var pos = position;
+    // Skip the first '
     readChar();
+    // Read the entire string within ''
     while (ch != '\'') {
       readChar();
     }
+    // Skip the last '
     readChar();
     var literal = input.substring(pos, position);
     return Token(type: TokenType.STRING, literal: literal);
   }
 
-  Token createToken(TokenType type, String literal) {
-    var tok = Token(type: type, literal: literal);
+  Token createToken(TokenType type, {String literal = ''}) {
     readChar();
-    return tok;
+    return Token(type: type, literal: literal == '' ? type.id : literal);
   }
 
-  Token createTwoCharToken() {
-    var char = ch;
-    readChar();
-    var literal = char + ch;
-    return switch (char) {
-      '=' => createToken(TokenType.EQ, literal),
-      '!' => createToken(TokenType.NOT_EQ, literal),
-      _ => createToken(TokenType.ILLEGAL, literal),
+  Token handleTwoCharToken() {
+    var literal = ch;
+    if (peekChar() == '=') {
+      readChar();
+      literal += ch;
+    }
+    return switch (literal) {
+      '==' => createToken(TokenType.EQ),
+      '!=' => createToken(TokenType.NOT_EQ),
+      '+=' => createToken(TokenType.PLUS_EQ),
+      '-=' => createToken(TokenType.MINUS_EQ),
+      '=' => createToken(TokenType.ASSIGN),
+      '+' => createToken(TokenType.PLUS),
+      '-' => createToken(TokenType.MINUS),
+      '!' => createToken(TokenType.BANG),
+      '/' => createToken(TokenType.SLASH),
+      '*' => createToken(TokenType.ASTERISK),
+      '<' => createToken(TokenType.LT),
+      '>' => createToken(TokenType.GT),
+      _ => createToken(TokenType.ILLEGAL, literal: ch),
     };
+  }
+
+  Token handleString(String ch) {
+    return !(isLetter(peekChar()) || isDigit(peekChar())) && peekChar() != '\''
+        ? createToken(TokenType.SQUOTE)
+        : getString();
   }
 
   Token nextToken() {
     skipWhiteSpace();
     return switch (ch) {
-      '=' => peekChar() == '='
-          ? createTwoCharToken()
-          : createToken(TokenType.ASSIGN, '='),
-      '+' => createToken(TokenType.PLUS, '+'),
-      '-' => createToken(TokenType.MINUS, '-'),
-      '!' => peekChar() == '='
-          ? createTwoCharToken()
-          : createToken(TokenType.BANG, '!'),
-      '/' => createToken(TokenType.SLASH, '/'),
-      '*' => createToken(TokenType.ASTERISK, '*'),
-      '<' => createToken(TokenType.LT, '<'),
-      '>' => createToken(TokenType.GT, '>'),
-      '(' => createToken(TokenType.LPAREN, '('),
-      ')' => createToken(TokenType.RPAREN, ')'),
-      '{' => createToken(TokenType.LBRACE, '{'),
-      '}' => createToken(TokenType.RBRACE, '}'),
-      ',' => createToken(TokenType.COMMA, ','),
-      ';' => createToken(TokenType.SEMICOLON, ';'),
-      '\'' =>
-        !(isLetter(peekChar()) || isDigit(peekChar())) && peekChar() != '\''
-            ? createToken(TokenType.SQUOTE, '\'')
-            : getString(),
-      '' => createToken(TokenType.EOF, ''),
+      '\'' => handleString(ch),
+      '(' => createToken(TokenType.LPAREN),
+      ')' => createToken(TokenType.RPAREN),
+      '{' => createToken(TokenType.LBRACE),
+      '}' => createToken(TokenType.RBRACE),
+      ',' => createToken(TokenType.COMMA),
+      ';' => createToken(TokenType.SEMICOLON),
+      '' => createToken(TokenType.EOF),
+      '=' ||
+      '!' ||
+      '+' ||
+      '-' ||
+      '/' ||
+      '*' ||
+      '<' ||
+      '>' =>
+        handleTwoCharToken(),
       _ => isLetter(ch)
           ? checkIdentOrKeyword()
           : isDigit(ch)
               ? getNumber()
-              : createToken(TokenType.ILLEGAL, ch),
+              : createToken(TokenType.ILLEGAL, literal: ch),
     };
   }
 }

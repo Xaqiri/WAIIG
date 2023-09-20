@@ -16,7 +16,7 @@ void main() {
       5 < 10 > 5;
 
       if else return true false
-      == !=
+      == != += -=
       'hello' ''
   ''';
 
@@ -77,6 +77,8 @@ void main() {
       {TokenType.FALSE, 'false'},
       {TokenType.EQ, '=='},
       {TokenType.NOT_EQ, '!='},
+      {TokenType.PLUS_EQ, '+='},
+      {TokenType.MINUS_EQ, '-='},
       {TokenType.STRING, '\'hello\''},
       {TokenType.STRING, '\'\''},
       {TokenType.EOF, ''},
