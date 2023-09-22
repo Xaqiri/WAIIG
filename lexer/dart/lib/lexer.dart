@@ -124,14 +124,6 @@ class Lexer {
   Token nextToken() {
     skipWhiteSpace();
     return switch (ch) {
-      '\'' => handleString(ch),
-      '(' => createToken(TokenType.LPAREN),
-      ')' => createToken(TokenType.RPAREN),
-      '{' => createToken(TokenType.LBRACE),
-      '}' => createToken(TokenType.RBRACE),
-      ',' => createToken(TokenType.COMMA),
-      ';' => createToken(TokenType.SEMICOLON),
-      '' => createToken(TokenType.EOF),
       '=' ||
       '!' ||
       '+' ||
@@ -141,6 +133,14 @@ class Lexer {
       '<' ||
       '>' =>
         handleTwoCharToken(),
+      '\'' => handleString(ch),
+      '(' => createToken(TokenType.LPAREN),
+      ')' => createToken(TokenType.RPAREN),
+      '{' => createToken(TokenType.LBRACE),
+      '}' => createToken(TokenType.RBRACE),
+      ',' => createToken(TokenType.COMMA),
+      ';' => createToken(TokenType.SEMICOLON),
+      '' => createToken(TokenType.EOF),
       _ => isLetter(ch)
           ? checkIdentOrKeyword()
           : isDigit(ch)

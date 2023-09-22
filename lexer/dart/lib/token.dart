@@ -6,11 +6,8 @@ enum TokenType {
   IDENT(id: ''),
   INT(id: ''),
   STRING(id: ''),
+  // Single character tokens
   ASSIGN(id: '='),
-  EQ(id: '=='),
-  NOT_EQ(id: '!='),
-  PLUS_EQ(id: '+='),
-  MINUS_EQ(id: '-='),
   PLUS(id: '+'),
   MINUS(id: '-'),
   BANG(id: '!'),
@@ -25,6 +22,14 @@ enum TokenType {
   RPAREN(id: ')'),
   LBRACE(id: '{'),
   RBRACE(id: '}'),
+  LBRACKET(id: '['),
+  RBRACKET(id: ']'),
+  // Double character tokens
+  EQ(id: '=='),
+  NOT_EQ(id: '!='),
+  PLUS_EQ(id: '+='),
+  MINUS_EQ(id: '-='),
+  // Keywords
   FUNCTION(id: 'fn'),
   LET(id: 'let'),
   TRUE(id: 'true'),
@@ -38,20 +43,6 @@ enum TokenType {
   const TokenType({required this.id});
 }
 
-var keywords = <String, TokenType>{
-  "fn": TokenType.FUNCTION,
-  "let": TokenType.LET,
-  "true": TokenType.TRUE,
-  "false": TokenType.FALSE,
-  "if": TokenType.IF,
-  "else": TokenType.ELSE,
-  "return": TokenType.RETURN,
-};
-
-TokenType lookupIdent(String ident) {
-  return keywords.containsKey(ident) ? keywords[ident]! : TokenType.IDENT;
-}
-
 class Token {
   TokenType type;
   String literal;
@@ -61,4 +52,17 @@ class Token {
   String toString() {
     return '{$type \'$literal\'}';
   }
+}
+
+TokenType lookupIdent(String ident) {
+  return switch (ident) {
+    "fn" => TokenType.FUNCTION,
+    "let" => TokenType.LET,
+    "true" => TokenType.TRUE,
+    "false" => TokenType.FALSE,
+    "if" => TokenType.IF,
+    "else" => TokenType.ELSE,
+    "return" => TokenType.RETURN,
+    _ => TokenType.IDENT,
+  };
 }
