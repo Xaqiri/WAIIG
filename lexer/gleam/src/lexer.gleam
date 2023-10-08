@@ -3,8 +3,6 @@ import gleam/int
 import gleam/list 
 import gleam/result
 import gleam/order
-import gleam/pair
-import gleam/io
 
 import token.{Token} 
 
@@ -52,11 +50,21 @@ pub fn next_token(input: String) -> #(Token, String) {
 }
 
 pub fn get_character(c: String) -> Character {
-
+    case is_letter(c) {
+        True -> Letter
+        False -> {
+            case is_digit(c) {
+                True -> Digit 
+                False -> Illegal
+            }
+        }
+    }
 }
 
-pub fn create_number(c: String) -> Character {
-
+pub fn create_number(input: String) -> #(Token, String) {
+    let n = get_string(input, "")
+    let num = n.0 |> string.reverse
+    #(token.INT(num), n.1)
 }
 
 pub fn get_string(input: String, str: String) -> #(String, String) {
@@ -85,5 +93,10 @@ pub fn is_letter(input: String) -> Bool {
     }
 }
 
-pub fn is_digit(input: String) -> Bool {}
+pub fn is_digit(input: String) -> Bool {
+    case int.parse(input) {
+        Ok(_) -> True
+        Error(_) -> False
+    }
+}
 
