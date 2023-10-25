@@ -2,8 +2,6 @@ import gleam/string
 import gleam/int
 import gleam/list 
 import gleam/result
-import gleam/order
-import gleam/io
 
 import token.{Token} 
 
