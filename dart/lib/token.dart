@@ -18,6 +18,7 @@ enum TokenType {
   COMMA(id: ','),
   SEMICOLON(id: ';'),
   SQUOTE(id: '\''),
+  DQUOTE(id: '"'),
   LPAREN(id: '('),
   RPAREN(id: ')'),
   LBRACE(id: '{'),

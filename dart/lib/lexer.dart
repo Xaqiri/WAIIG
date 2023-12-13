@@ -78,7 +78,7 @@ class Lexer {
     // Skip the first '
     readChar();
     // Read the entire string within ''
-    while (ch != '\'') {
+    while (ch != '\'' && ch != '"') {
       readChar();
     }
     // Skip the last '
@@ -116,8 +116,11 @@ class Lexer {
   }
 
   Token handleString(String ch) {
-    return !(isLetter(peekChar()) || isDigit(peekChar())) && peekChar() != '\''
-        ? createToken(TokenType.SQUOTE)
+    return !(isLetter(peekChar()) || isDigit(peekChar())) &&
+            (peekChar() != '\'' && peekChar() != '"')
+        ? (ch == '\''
+            ? createToken(TokenType.SQUOTE)
+            : createToken(TokenType.DQUOTE))
         : getString();
   }
 
@@ -133,7 +136,7 @@ class Lexer {
       '<' ||
       '>' =>
         handleTwoCharToken(),
-      '\'' => handleString(ch),
+      '\'' || '"' => handleString(ch),
       '(' => createToken(TokenType.LPAREN),
       ')' => createToken(TokenType.RPAREN),
       '{' => createToken(TokenType.LBRACE),

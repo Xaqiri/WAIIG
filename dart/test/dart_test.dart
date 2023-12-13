@@ -18,6 +18,7 @@ void main() {
       if else return true false
       == != += -=
       'hello' ''
+      "hello" ""
   ''';
 
     var lexer = Lexer(input: text);
@@ -81,6 +82,8 @@ void main() {
       {TokenType.MINUS_EQ, '-='},
       {TokenType.STRING, '\'hello\''},
       {TokenType.STRING, '\'\''},
+      {TokenType.STRING, '"hello"'},
+      {TokenType.STRING, '""'},
       {TokenType.EOF, ''},
     };
 

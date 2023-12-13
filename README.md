@@ -10,7 +10,7 @@ This will contain the code for the interpreters as I work through *Writing an In
 
 |           | Lexing    | Parsing     | Evaluation  | Extending the Interpreter | 
 | :--       | :--       | :--         | :--         | :--                       | 
-| Go        | Completed | In progress |             |                           |  
+| Go        | Completed | In progress | Not started |                           |  
 | Dart      | Completed | Not started | Not started |                           |  
 | Gleam     | 1.5 REPL  | Not started | Not started |                           |  
 
